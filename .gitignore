@@ -1,0 +1,27 @@
+# Prevent huge raw/cache/model files from being tracked
+*.ff1pkl
+*.sqlite
+*.pkl
+*.csv
+
+# Jupyter/IPython
+*.ipynb_checkpoints
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Data and outputs
+*.joblib
+*.csv
+*.log
+
+# Jupyter/IPython
+*.ipynb_checkpoints
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
