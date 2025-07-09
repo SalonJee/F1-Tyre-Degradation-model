@@ -1,0 +1,36 @@
+# F1 Tire Degradation Model
+
+step 0 : 
+
+# 1. Download Python installer from:
+#    https://www.python.org/downloads/
+# 2. Run the installer.
+#    IMPORTANT: Check "Add Python to PATH" before installing.
+# 3. After installation, open Command Prompt (cmd) or PowerShell.
+# 4. Verify Python installation by typing:
+> python --version
+Python 3.11.4
+
+# 5. Verify pip installation by typing:
+> pip --version
+To run the project, open a terminal and navigate to the project folder with  
+`cd path/to/f1model`.  
+ ----------------------------------------------------------------------------------
+ ----------------------------------------------------------------------------------
+
+step -1 : 
+
+Then run the main script with the desired stage.  
+
+For preprocessing, use:  
+`python main.py --stage preprocess --year 2023 --gp "Belgian" --type "R"`  
+providing the race year, Grand Prix name in quotes, and session type (`"R"` for Race, `"Q"` for Qualifying, `"P"` for Practice).  
+
+To train the model, run:  
+`python main.py --stage train`.  
+
+To simulate tire degradation, run:  
+`python main.py --stage simulate`  
+and follow the prompts to enter the race year, GP name, session type, and select a driver by index or short code as shown (e.g., `[0] Max`, `[1] VER`).  
+
+The simulation will then display the tire degradation curve for the chosen driver.
