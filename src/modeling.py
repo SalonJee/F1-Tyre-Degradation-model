@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 
 from .config import PROCESSED_DIR, MODEL_DIR
 
+
 # Shared constants
 BASE_FEATURES = [
     "Driver", "Compound", "TyreLife", "Stint", "TrackStatus",
@@ -36,21 +37,20 @@ def load_all_data():
 
 
 def preprocess_and_engineer(df):
-    """Filter valid laps, convert times, and engineer degradation feature.
-
-    Degradation (DegradPct) is calculated as percentage increase in lap time
-    compared to the best lap in the same stint by the same driver.
-
-    For simulation, tire health percentage = 100 - DegradPct,
-    where 100% means no degradation (fresh tire).
-    """
     df = df[df['IsAccurate']].copy()
     df = df.dropna(subset=BASE_FEATURES + [TARGET_LAPTIME])
     df[TARGET_LAPTIME] = pd.to_timedelta(df[TARGET_LAPTIME]).dt.total_seconds()
 
+    # Base degradation
     df['BestLapInStint'] = df.groupby(['Driver', 'Stint'])[TARGET_LAPTIME].transform('min')
-    df[TARGET_DEGRAD] = ((df[TARGET_LAPTIME] - df['BestLapInStint']) /
-                         df['BestLapInStint']) * 100
+    df[TARGET_DEGRAD] = ((df[TARGET_LAPTIME] - df['BestLapInStint']) / df['BestLapInStint']) * 100
+
+    # Add relative age of the tire in the stint
+    df['MaxTyreLifeInStint'] = df.groupby(['Driver', 'Stint'])['TyreLife'].transform('max')
+    df['RelativeTyreAge'] = df['TyreLife'] / df['MaxTyreLifeInStint']
+
+    # Optional: softly bias degradation upward at end of stint (model can still override it)
+    # df[TARGET_DEGRAD] += (df['RelativeTyreAge'] > 0.9).astype(float) * 5
 
     for col in CATEGORICAL:
         df[col] = df[col].astype(str)
