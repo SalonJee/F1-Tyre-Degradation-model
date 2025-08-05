@@ -22,9 +22,10 @@ step -1 :
 
 Then run the main script with the desired stage.  
 
+
 For preprocessing, use:  
-`python main.py --stage preprocess --year 2023 --gp "Belgian" --type "R"`  
-providing the race year, Grand Prix name in quotes, and session type (`"R"` for Race, `"Q"` for Qualifying, `"P"` for Practice).  
+"python main.py --stage preprocess" 
+providing the race year, Grand Prix name in, and session type (`"R"` for Race, `"Q"` for Qualifying, `"P"` for Practice), as input.  
 
 To train the model, run:  
 `python main.py --stage train`.  
