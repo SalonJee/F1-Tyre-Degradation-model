@@ -10,6 +10,7 @@ from src.modeling import (
 )
 from src.simulation import simulate_race_interactive
 from src.config import PROCESSED_DIR
+from src.config import SEL_PROCESSED_DIR
 import os
 
 
@@ -19,6 +20,16 @@ def run_preprocess(year, gp, session_type):
     os.makedirs(PROCESSED_DIR, exist_ok=True)
     filename = f"clean_{gp}({year},{session_type}).csv"
     path = os.path.join(PROCESSED_DIR, filename)
+    clean_laps.to_csv(path, index=False)
+    print(f"✅ Preprocessed and saved: {path}")
+
+#to run selective circuit analysis
+def run_sel_preprocess(year, gp, session_type):
+    session = load_session(year, gp, session_type)
+    clean_laps = preprocess_laps(session)
+    os.makedirs(SEL_PROCESSED_DIR, exist_ok=True)
+    filename = f"clean_{gp}({year},{session_type}).csv"
+    path = os.path.join(SEL_PROCESSED_DIR, filename)
     clean_laps.to_csv(path, index=False)
     print(f"✅ Preprocessed and saved: {path}")
 
@@ -36,7 +47,7 @@ def run_training():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="F1 Modeling System")
-    parser.add_argument("--stage", required=True, choices=["preprocess", "train", "simulate"])
+    parser.add_argument("--stage", required=True, choices=["preprocess","sel_preprocess", "train", "simulate","analyze"])
     parser.add_argument("--year", type=int)
     parser.add_argument("--gp", type=str)
     parser.add_argument("--type", type=str, help="Session type: R, Q, FP1")
@@ -44,12 +55,29 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.stage == "preprocess":
-        if args.year is None or args.gp is None or args.type is None:
-            raise ValueError("Must provide --year, --gp, and --type for preprocessing.")
-        run_preprocess(args.year, args.gp, args.type)
+      if args.year is None:
+        args.year = int(input("📅 Enter race year (e.g., 2023): "))
+      if args.gp is None:
+        args.gp = input("🏁 Enter GP name (e.g., Monza): ")
+      if args.type is None:
+        args.type = input("📂 Enter session type [R/Q/P]: ").upper()
 
+      run_preprocess(args.year, args.gp, args.type)
+
+    if args.stage == "sel_preprocess":
+      if args.year is None:
+        args.year = int(input("📅 Enter race year (e.g., 2023): "))
+      if args.gp is None:
+        args.gp = input("🏁 Enter GP name (e.g., Monza): ")
+      if args.type is None:
+        args.type = input("📂 Enter session type [R/Q/P]: ").upper()
+
+      run_sel_preprocess(args.year, args.gp, args.type)
+    
     elif args.stage == "train":
         run_training()
 
     elif args.stage == "simulate":
         simulate_race_interactive()
+    
+   

@@ -1,0 +1,4 @@
+As we can see in the plot, the green dots represent hard tyres , which go upto 50  tyre life(in x axis) , which tells that 
+hard tyres last longer , and even till 50 tyre life, while other tyres cant. It also goes upto only 100s laptime( which 
+is very less compared to others), which means, drivers are able to drive faster using hard tyres, ofcourse, it also 
+depends on drivrs using it , and other factors as well. 

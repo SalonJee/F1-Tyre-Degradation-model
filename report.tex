@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\geometry{a4paper, margin=1in}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\title{\textbf{F1 Tire Compound Degradation Modeling}\\\large Final Project Report}
+\author{Salon Timsina \\ Teammate 1 \\ Teammate 2}
+\date{\today}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{F1 Tire Degradation Project}
+\lhead{Final Report}
+\rfoot{Page \thepage}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+This project models tire degradation in Formula 1 races using real race telemetry and compound data. We utilize regression-based and ensemble machine learning models, such as Random Forest, to simulate how tire performance declines over laps across different drivers and conditions. The goal is to develop predictive insights that can be used in simulation strategies or race planning tools.
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+%-----------------------------------------
+\section{Introduction}
+\subsection{Motivation}
+Understanding tire degradation is crucial in F1 race strategy. Teams rely heavily on data-driven models to make pit stop decisions, assess performance drop-offs, and optimize stint durations.
+
+\subsection{Objective}
+Our objective is to build a predictive model for tire degradation using historical F1 race data and analyze how tire performance degrades over race laps, differentiated by compound, driver, and track conditions.
+We also try to simulate those results, on past race conditions, and predict the tyre degradation percentage. 
+%-----------------------------------------
+\section{Background and Literature Review}
+\subsection{Tire Physics and F1 Compounds}
+Brief overview of F1 tire types (Soft, Medium, Hard), their degradation patterns, and the influence of external conditions (temperature, track layout).
+
+\subsection{Previous Work}
+Mention studies or projects that have attempted similar modeling (if any). Highlight the gap this project attempts to address.
+
+%-----------------------------------------
+\section{Data Collection and Preprocessing}
+\subsection{Data Source}
+Data is extracted using the FastF1 Python library, which interfaces with publicly available F1 telemetry data.
+
+\subsection{Session Loading and Filtering}
+Details on how sessions were filtered (e.g., only races), what types of data were extracted (lap times, tire compounds, stint lengths, driver telemetry, etc.)
+
+\subsection{Feature Engineering}
+Describe how lap-based degradation metrics were calculated. Mention normalization, handling outliers, merging stint-level data, etc.
+
+%-----------------------------------------
+\section{Methodology}
+\subsection{Model Selection}
+Justify the use of models like Random Forest. Discuss alternative approaches considered (linear regression, polynomial fit, etc.).
+
+\subsection{Training Pipeline}
+Detail the training-testing split, cross-validation strategy, and target/output variables (e.g., lap time delta, degradation slope, etc.).
+
+\subsection{Evaluation Metrics}
+Define the metrics used to evaluate model performance (MAE, RMSE, R²).
+
+%-----------------------------------------
+\section{Experiments and Results}
+\subsection{Simulation Setup}
+Overview of test GPs (e.g., Monaco, Spa), number of drivers used, and compound breakdown.
+
+\subsection{Model Performance}
+Report model scores, degradation curves, and comparisons across compounds.
+
+\subsection{Visualization}
+Include plots: lap vs time, predicted vs actual, compound degradation overlays.
+
+%-----------------------------------------
+\section{Discussion}
+\subsection{Insights}
+What patterns were observed? How does degradation differ by compound or circuit? What does the model capture well?
+
+\subsection{Limitations}
+Discuss overfitting risks, limitations of FastF1 data granularity, or track-specific anomalies.
+
+%-----------------------------------------
+\section{Conclusion and Future Work}
+Summarize key takeaways. Propose next steps: more robust data, compound interaction modeling, integration with strategy simulators, etc.
+
+%-----------------------------------------
+\section*{References}
+\begin{itemize}
+    \item FastF1 documentation: \url{https://theoehrly.github.io/Fast-F1/}
+    \item Scikit-learn API: \url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html}
+    \item Formula 1 Pirelli Tire Info: \url{https://www.pirelli.com/tires/en-ww/motorsport/formula1}
+\end{itemize}
+
+%-----------------------------------------
+\appendix
+\section{Appendix A: Sample Code}
+\begin{verbatim}
+# Example FastF1 session loading
+import fastf1
+session = fastf1.get_session(2023, "Monaco", "R")
+session.load()
+laps = session.laps.pick_drivers(['VER', 'LEC'])
+\end{verbatim}
+
+\section{Appendix B: Model Parameters}
+Include model hyperparameters, feature importance table, etc.
+
+\end{document}

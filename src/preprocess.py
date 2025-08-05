@@ -1,9 +1,10 @@
 import pandas as pd
 from .config import FEATURE_COLUMNS
+from .lap1predict import lap1predict
 
 def preprocess_laps(session):
     """
-    Clean and filter lap data from session.
+    Clean and filter lap data from session, and insert synthetic Lap 1 rows if missing.
     """
     laps = session.laps
 
@@ -29,4 +30,8 @@ def preprocess_laps(session):
     available_cols = [col for col in FEATURE_COLUMNS if col in clean_laps.columns]
     clean_laps = clean_laps[available_cols]
 
-    return clean_laps
+    # Insert synthetic Lap 1 rows if missing
+    synthetic_rows = lap1predict(clean_laps)
+    combined_df = pd.concat([synthetic_rows, clean_laps], ignore_index=True)
+
+    return combined_df
